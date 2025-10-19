@@ -17,13 +17,15 @@ public class BienvenidaActivity extends AppCompatActivity {
         Button btnRegistro = findViewById(R.id.btnRegistro);
 
         // Ir al Login
-        btnLogin.setOnClickListener(v ->
-                startActivity(new Intent(this, LoginActivity.class))
-        );
+        btnLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(BienvenidaActivity.this, LoginActivity.class);
+            startActivity(intent);
+        });
 
         // Ir al Registro
-        btnRegistro.setOnClickListener(v ->
-                startActivity(new Intent(this, RegistroActivity.class))
-        );
+        btnRegistro.setOnClickListener(v -> {
+            Intent intent = new Intent(BienvenidaActivity.this, RegistroActivity.class);
+            startActivity(intent);
+        });
     }
 }

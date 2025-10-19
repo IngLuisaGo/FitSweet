@@ -8,4 +8,10 @@
     <string name="email_hint">Correo electrónico</string>
     <string name="password_hint">Contraseña</string>
     <string name="confirm_password_hint">Confirmar contraseña</string>
+
+    <!-- Textos para la pantalla de bienvenida -->
+    <string name="bienvenida_titulo">¡Bienvenida a FitSweet!</string>
+    <string name="bienvenida_subtitulo">Deléitate con nuestros postres saludables sin culpa 🍓</string>
+    <string name="btn_iniciar">Iniciar Sesión</string>
+    <string name="btn_registrar">Registrarse</string>
 </resources>

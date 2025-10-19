@@ -1,28 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/pink"
+    android:padding="24dp"
+    tools:context=".PerfilActivity">
 
+    <!-- Logo -->
     <ImageView
-        android:src="@drawable/ic_launcher_foreground"
-        android:layout_width="120dp"
-        android:layout_height="120dp"/>
+        android:id="@+id/logoFitSweet"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:src="@drawable/logo_fitsweet"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="@string/app_name"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter" />
 
+    <!-- Bienvenida -->
     <TextView
-        android:text="¡Bienvenida a FitSweet!"
+        android:id="@+id/tvBienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bienvenida_fitsweet"
+        android:textStyle="bold"
+        android:textColor="@color/white"
         android:textSize="20sp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginBottom="8dp" />
 
+    <!-- Correo del cliente -->
     <TextView
-        android:text="Cliente: cliente@fitsweet.com"
-        android:layout_marginTop="5dp"/>
+        android:id="@+id/tvCliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cliente_email"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_marginBottom="32dp" />
 
+    <!-- Botón cerrar sesión -->
     <Button
-        android:id="@+id/btnCerrar"
-        android:text="Cerrar Sesión"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/pink"
-        android:textColor="@color/white"/>
+        android:id="@+id/btnCerrarSesion"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_cerrar_sesion"
+        android:backgroundTint="@color/purple"
+        android:textColor="@color/white"
+        android:layout_marginTop="24dp" />
+
 </LinearLayout>

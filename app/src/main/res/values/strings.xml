@@ -14,4 +14,8 @@
     <string name="bienvenida_subtitulo">Deléitate con nuestros postres saludables sin culpa 🍓</string>
     <string name="btn_iniciar">Iniciar Sesión</string>
     <string name="btn_registrar">Registrarse</string>
+
+    <string name="bienvenida_fitsweet">Bienvenida a FitSweet 🍓</string>
+    <string name="cliente_email">Cliente: cliente@fitsweet.com</string>
+    <string name="btn_cerrar_sesion">Cerrar sesión</string>
 </resources>

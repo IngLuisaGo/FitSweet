@@ -11,9 +11,12 @@ public class PerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        Button cerrar = findViewById(R.id.btnCerrar);
-        cerrar.setOnClickListener(v -> {
-            startActivity(new Intent(this, BienvenidaActivity.class));
+        Button btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
+
+        btnCerrarSesion.setOnClickListener(v -> {
+            // Regresar a la pantalla de bienvenida
+            Intent intent = new Intent(PerfilActivity.this, BienvenidaActivity.class);
+            startActivity(intent);
             finish();
         });
     }

@@ -17,6 +17,12 @@
         <!-- Pantalla de Registro -->
         <activity android:name=".RegistroActivity" />
 
+        <!-- Pantalla de Login -->
+        <activity android:name=".LoginActivity" />
+
+        <!-- Pantalla de Perfil -->
+        <activity android:name=".PerfilActivity" />
+
         <!-- Pantalla de Bienvenida -->
         <activity android:name=".BienvenidaActivity" />
 
@@ -29,9 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- MainActivity (opcional, puedes usarla para el Login) -->
-        <activity android:name=".MainActivity" />
 
     </application>
 

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">FitSweet</string>
+    <string name="app_name_fitsweet">FitSweet 🍓</string>
+    <string name="welcome_message">Bienvenida a FitSweet</string>
+    <string name="register_title">Regístrate en FitSweet 🍓</string>
+    <string name="register_button">Crear cuenta</string>
+    <string name="back_button">Volver</string>
+    <string name="email_hint">Correo electrónico</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="confirm_password_hint">Confirmar contraseña</string>
+</resources>

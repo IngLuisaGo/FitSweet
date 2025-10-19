@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:src="@drawable/ic_launcher_foreground"
+        android:layout_width="120dp"
+        android:layout_height="120dp"/>
+
+    <TextView
+        android:text="¡Bienvenida a FitSweet!"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:text="Cliente: cliente@fitsweet.com"
+        android:layout_marginTop="5dp"/>
+
+    <Button
+        android:id="@+id/btnCerrar"
+        android:text="Cerrar Sesión"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/pink"
+        android:textColor="@color/white"/>
+</LinearLayout>

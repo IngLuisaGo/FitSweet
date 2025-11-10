@@ -39,5 +39,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // Acción del botón Volver
         btnVolverLogin.setOnClickListener(v -> finish());
+        Intent intent = new Intent(LoginActivity.this, ProductosActivity.class);
+        startActivity(intent);
+        finish();
+
     }
 }

@@ -18,4 +18,9 @@
     <string name="bienvenida_fitsweet">Bienvenida a FitSweet 🍓</string>
     <string name="cliente_email">Cliente: cliente@fitsweet.com</string>
     <string name="btn_cerrar_sesion">Cerrar sesión</string>
+    <string name="editar">Editar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="ver_productos">Ver Productos</string>
+    <string name="agregar_producto">Agregar Producto</string>
+
 </resources>

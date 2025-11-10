@@ -6,18 +6,17 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class PerfilActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        Button btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
+        Button btnVerProductos = findViewById(R.id.btnVerProductos);
 
-        btnCerrarSesion.setOnClickListener(v -> {
-            // Regresar a la pantalla de bienvenida
-            Intent intent = new Intent(PerfilActivity.this, BienvenidaActivity.class);
+        btnVerProductos.setOnClickListener(v -> {
+            Intent intent = new Intent(PerfilActivity.this, ProductosActivity.class);
             startActivity(intent);
-            finish();
         });
     }
 }

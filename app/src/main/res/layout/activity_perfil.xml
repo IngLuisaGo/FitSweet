@@ -51,4 +51,13 @@
         android:textColor="@color/white"
         android:layout_marginTop="24dp" />
 
+    <Button
+        android:id="@+id/btnVerProductos"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Ver Productos"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"/>
+
 </LinearLayout>

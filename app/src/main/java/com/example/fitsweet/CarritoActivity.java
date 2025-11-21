@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fitsweet.R;
 import com.example.fitsweet.adapters.CarritoAdapter;
 import com.example.fitsweet.database.DBHelper;
 import com.example.fitsweet.models.CarritoItem;

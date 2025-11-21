@@ -1,7 +1,6 @@
 package com.example.fitsweet;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +27,7 @@ public class ProductosActivity extends AppCompatActivity {
     Button btnAgregarProducto;
     Button btnVerCarrito;
     ArrayList<Producto> listaProductos;
+    boolean esAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,8 @@ public class ProductosActivity extends AppCompatActivity {
         recyclerProductos.setLayoutManager(new LinearLayoutManager(this));
 
         dbHelper = new DBHelper(this);
+        esAdmin = getIntent().getBooleanExtra("ES_ADMIN", false);
+        btnAgregarProducto.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
         cargarProductos();
 
         btnAgregarProducto.setOnClickListener(v -> mostrarDialogoAgregar());
@@ -51,7 +53,7 @@ public class ProductosActivity extends AppCompatActivity {
 
     private void cargarProductos() {
         listaProductos = dbHelper.obtenerProductos();
-        adapter = new ProductoAdapter(this, listaProductos);
+        adapter = new ProductoAdapter(this, listaProductos, esAdmin);
         recyclerProductos.setAdapter(adapter);
     }
 

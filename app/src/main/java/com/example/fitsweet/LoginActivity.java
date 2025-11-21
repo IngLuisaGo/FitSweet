@@ -35,14 +35,17 @@ public class LoginActivity extends AppCompatActivity {
             if (correo.isEmpty() || contrasena.isEmpty()) {
                 Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show();
             } else {
-                boolean credencialesValidas = dbHelper.validarCredenciales(correo, contrasena);
-                if (credencialesValidas) {
-                    Toast.makeText(this, "Inicio de sesión exitoso. ¡Bienvenida de nuevo a FitSweet 🍓!", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(this, BienvenidaActivity.class));
-                    finish();
-                } else {
+                String rol = dbHelper.obtenerRolPorCredenciales(correo, contrasena);
+                if (rol == null) {
                     Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+
+                Toast.makeText(this, "Inicio de sesión exitoso. ¡Bienvenida de nuevo a FitSweet 🍓!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, ProductosActivity.class);
+                intent.putExtra("ES_ADMIN", "admin".equalsIgnoreCase(rol));
+                startActivity(intent);
+                finish();
             }
         });
 

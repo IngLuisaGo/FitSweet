@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "fitsweet.db";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
     private static final String TABLE_PRODUCTOS = "productos";
     private static final String TABLE_USUARIOS = "usuarios";
     private static final String TABLE_CARRITO = "carrito";
@@ -29,7 +29,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "nombre TEXT, " +
                 "descripcion TEXT, " +
-                "precio REAL)";
+                "precio REAL, " +
+                "imagen TEXT)";
         db.execSQL(createProductosTable);
 
         String createUsuariosTable = "CREATE TABLE " + TABLE_USUARIOS + " (" +
@@ -83,12 +84,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // Insertar producto
-    public void insertarProducto(String nombre, String descripcion, double precio) {
+    public void insertarProducto(String nombre, String descripcion, double precio, String imagenUrl) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("nombre", nombre);
         values.put("descripcion", descripcion);
         values.put("precio", precio);
+        values.put("imagen", imagenUrl);
         db.insert(TABLE_PRODUCTOS, null, values);
         db.close();
     }
@@ -105,7 +107,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         cursor.getInt(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        cursor.getDouble(3)
+                        cursor.getDouble(3),
+                        cursor.getString(4)
                 ));
             } while (cursor.moveToNext());
         }
@@ -115,12 +118,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // Actualizar producto
-    public void actualizarProducto(int id, String nombre, String descripcion, double precio) {
+    public void actualizarProducto(int id, String nombre, String descripcion, double precio, String imagenUrl) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("nombre", nombre);
         values.put("descripcion", descripcion);
         values.put("precio", precio);
+        values.put("imagen", imagenUrl);
         db.update(TABLE_PRODUCTOS, values, "id=?", new String[]{String.valueOf(id)});
         db.close();
     }
@@ -235,7 +239,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<com.example.fitsweet.models.CarritoItem> obtenerCarrito() {
         ArrayList<com.example.fitsweet.models.CarritoItem> lista = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT c.id, c.producto_id, c.cantidad, p.nombre, p.descripcion, p.precio " +
+        String query = "SELECT c.id, c.producto_id, c.cantidad, p.nombre, p.descripcion, p.precio, p.imagen " +
                 "FROM " + TABLE_CARRITO + " c " +
                 "JOIN " + TABLE_PRODUCTOS + " p ON c.producto_id = p.id";
         Cursor cursor = db.rawQuery(query, null);
@@ -248,7 +252,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         cursor.getString(3),
                         cursor.getString(4),
                         cursor.getDouble(5),
-                        cursor.getInt(2)
+                        cursor.getInt(2),
+                        cursor.getString(6)
                 ));
             } while (cursor.moveToNext());
         }

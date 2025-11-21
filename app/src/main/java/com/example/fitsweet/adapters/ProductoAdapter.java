@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fitsweet.R;
 import com.example.fitsweet.database.DBHelper;
 import com.example.fitsweet.models.Producto;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -46,6 +48,7 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
         holder.tvNombre.setText(producto.getNombre());
         holder.tvDescripcion.setText(producto.getDescripcion());
         holder.tvPrecio.setText("$" + producto.getPrecio());
+        cargarImagen(holder.ivProducto, producto.getImagenUrl());
 
         holder.btnEditar.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
         holder.btnEliminar.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
@@ -85,21 +88,25 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
         EditText etNombre = vista.findViewById(R.id.etNombreProducto);
         EditText etDescripcion = vista.findViewById(R.id.etDescripcionProducto);
         EditText etPrecio = vista.findViewById(R.id.etPrecioProducto);
+        EditText etImagen = vista.findViewById(R.id.etImagenProducto);
 
         etNombre.setText(producto.getNombre());
         etDescripcion.setText(producto.getDescripcion());
         etPrecio.setText(String.valueOf(producto.getPrecio()));
+        etImagen.setText(producto.getImagenUrl());
 
         builder.setTitle("Editar Producto");
         builder.setPositiveButton("Guardar", (dialog, which) -> {
             String nombre = etNombre.getText().toString();
             String descripcion = etDescripcion.getText().toString();
             double precio = Double.parseDouble(etPrecio.getText().toString());
+            String imagenUrl = etImagen.getText().toString();
 
-            dbHelper.actualizarProducto(producto.getId(), nombre, descripcion, precio);
+            dbHelper.actualizarProducto(producto.getId(), nombre, descripcion, precio, imagenUrl);
             producto.setNombre(nombre);
             producto.setDescripcion(descripcion);
             producto.setPrecio(precio);
+            producto.setImagenUrl(imagenUrl);
             notifyDataSetChanged();
             Toast.makeText(context, "Producto actualizado", Toast.LENGTH_SHORT).show();
         });
@@ -115,6 +122,7 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvNombre, tvDescripcion, tvPrecio;
+        ImageView ivProducto;
         ImageButton btnEditar, btnEliminar;
         View btnAgregarCarrito;
 
@@ -123,9 +131,22 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
             tvNombre = itemView.findViewById(R.id.tvNombre);
             tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
             tvPrecio = itemView.findViewById(R.id.tvPrecio);
+            ivProducto = itemView.findViewById(R.id.ivProducto);
             btnEditar = itemView.findViewById(R.id.btnEditar);
             btnEliminar = itemView.findViewById(R.id.btnEliminar);
             btnAgregarCarrito = itemView.findViewById(R.id.btnAgregarCarrito);
         }
+    }
+
+    private void cargarImagen(ImageView imageView, String url) {
+        if (url == null || url.trim().isEmpty()) {
+            imageView.setImageResource(R.drawable.logo_fitsweet);
+            return;
+        }
+        Picasso.get()
+                .load(url)
+                .placeholder(R.drawable.logo_fitsweet)
+                .error(R.drawable.logo_fitsweet)
+                .into(imageView);
     }
 }

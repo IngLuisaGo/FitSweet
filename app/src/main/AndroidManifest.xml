@@ -34,6 +34,9 @@
         <!-- Pantalla de Bienvenida -->
         <activity android:name=".BienvenidaActivity" />
 
+        <!-- Pantalla de Sede -->
+        <activity android:name=".SedeActivity" />
+
         <!-- Pantalla Splash (debe ser la principal al abrir la app) -->
         <activity
             android:name=".SplashActivity"

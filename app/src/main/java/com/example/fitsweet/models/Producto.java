@@ -5,14 +5,16 @@ public class Producto {
     private String nombre;
     private String descripcion;
     private double precio;
+    private String imagenUrl;
 
     public Producto() {}
 
-    public Producto(int id, String nombre, String descripcion, double precio) {
+    public Producto(int id, String nombre, String descripcion, double precio, String imagenUrl) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
+        this.imagenUrl = imagenUrl;
     }
 
     // Getters y Setters
@@ -27,4 +29,7 @@ public class Producto {
 
     public double getPrecio() { return precio; }
     public void setPrecio(double precio) { this.precio = precio; }
+
+    public String getImagenUrl() { return imagenUrl; }
+    public void setImagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
 }

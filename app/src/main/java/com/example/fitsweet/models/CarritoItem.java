@@ -7,14 +7,16 @@ public class CarritoItem {
     private String descripcion;
     private double precio;
     private int cantidad;
+    private String imagenUrl;
 
-    public CarritoItem(int id, int productoId, String nombre, String descripcion, double precio, int cantidad) {
+    public CarritoItem(int id, int productoId, String nombre, String descripcion, double precio, int cantidad, String imagenUrl) {
         this.id = id;
         this.productoId = productoId;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.cantidad = cantidad;
+        this.imagenUrl = imagenUrl;
     }
 
     public int getId() {
@@ -48,4 +50,6 @@ public class CarritoItem {
     public double getTotal() {
         return precio * cantidad;
     }
+
+    public String getImagenUrl() { return imagenUrl; }
 }

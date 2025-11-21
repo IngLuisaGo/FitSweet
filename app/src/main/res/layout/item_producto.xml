@@ -7,6 +7,14 @@
     android:padding="12dp"
     android:layout_marginBottom="8dp">
 
+    <ImageView
+        android:id="@+id/ivProducto"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/logo_fitsweet"
+        android:layout_marginBottom="8dp" />
+
     <!-- Nombre del producto -->
     <TextView
         android:id="@+id/tvNombre"

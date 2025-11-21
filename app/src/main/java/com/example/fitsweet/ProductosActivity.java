@@ -74,12 +74,14 @@ public class ProductosActivity extends AppCompatActivity {
         EditText etNombre = vista.findViewById(R.id.etNombreProducto);
         EditText etDescripcion = vista.findViewById(R.id.etDescripcionProducto);
         EditText etPrecio = vista.findViewById(R.id.etPrecioProducto);
+        EditText etImagen = vista.findViewById(R.id.etImagenProducto);
 
         builder.setTitle("Agregar Producto");
         builder.setPositiveButton("Guardar", (dialog, which) -> {
             String nombre = etNombre.getText().toString();
             String descripcion = etDescripcion.getText().toString();
             String precioStr = etPrecio.getText().toString();
+            String imagenUrl = etImagen.getText().toString();
 
             if (nombre.isEmpty() || descripcion.isEmpty() || precioStr.isEmpty()) {
                 Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
@@ -87,7 +89,7 @@ public class ProductosActivity extends AppCompatActivity {
             }
 
             double precio = Double.parseDouble(precioStr);
-            dbHelper.insertarProducto(nombre, descripcion, precio);
+            dbHelper.insertarProducto(nombre, descripcion, precio, imagenUrl);
             cargarProductos(); // refresca el RecyclerView
             Toast.makeText(this, "Producto agregado", Toast.LENGTH_SHORT).show();
         });

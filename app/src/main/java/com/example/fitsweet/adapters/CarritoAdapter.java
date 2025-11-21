@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fitsweet.R;
 import com.example.fitsweet.database.DBHelper;
 import com.example.fitsweet.models.CarritoItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -49,6 +51,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
         holder.tvPrecio.setText("$" + item.getPrecio());
         holder.tvCantidad.setText(String.valueOf(item.getCantidad()));
         holder.tvTotalLinea.setText("Total: $" + String.format("%.2f", item.getTotal()));
+        cargarImagen(holder.ivImagen, item.getImagenUrl());
 
         holder.btnSumar.setOnClickListener(v -> actualizarCantidad(item, item.getCantidad() + 1, holder.getAdapterPosition()));
         holder.btnRestar.setOnClickListener(v -> actualizarCantidad(item, item.getCantidad() - 1, holder.getAdapterPosition()));
@@ -81,6 +84,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvNombre, tvDescripcion, tvPrecio, tvCantidad, tvTotalLinea;
         ImageButton btnSumar, btnRestar, btnEliminar;
+        ImageView ivImagen;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,6 +96,19 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
             btnSumar = itemView.findViewById(R.id.btnSumar);
             btnRestar = itemView.findViewById(R.id.btnRestar);
             btnEliminar = itemView.findViewById(R.id.btnEliminarItem);
+            ivImagen = itemView.findViewById(R.id.ivImagenCarrito);
         }
+    }
+
+    private void cargarImagen(ImageView imageView, String url) {
+        if (url == null || url.trim().isEmpty()) {
+            imageView.setImageResource(R.drawable.logo_fitsweet);
+            return;
+        }
+        Picasso.get()
+                .load(url)
+                .placeholder(R.drawable.logo_fitsweet)
+                .error(R.drawable.logo_fitsweet)
+                .into(imageView);
     }
 }

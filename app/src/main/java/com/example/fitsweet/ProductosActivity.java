@@ -18,6 +18,8 @@ import com.example.fitsweet.database.DBHelper;
 import com.example.fitsweet.models.Producto;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ProductosActivity extends AppCompatActivity {
 
@@ -29,6 +31,7 @@ public class ProductosActivity extends AppCompatActivity {
     Button btnGestionUsuarios;
     ArrayList<Producto> listaProductos;
     boolean esAdmin;
+    private ExecutorService dbExecutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class ProductosActivity extends AppCompatActivity {
         recyclerProductos.setLayoutManager(new LinearLayoutManager(this));
 
         dbHelper = new DBHelper(this);
+        dbExecutor = Executors.newSingleThreadExecutor();
         esAdmin = getIntent().getBooleanExtra("ES_ADMIN", false);
         btnAgregarProducto.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
         btnGestionUsuarios.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
@@ -59,10 +63,23 @@ public class ProductosActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dbExecutor != null && !dbExecutor.isShutdown()) {
+            dbExecutor.shutdownNow();
+        }
+    }
+
     private void cargarProductos() {
-        listaProductos = dbHelper.obtenerProductos();
-        adapter = new ProductoAdapter(this, listaProductos, esAdmin);
-        recyclerProductos.setAdapter(adapter);
+        dbExecutor.execute(() -> {
+            ArrayList<Producto> productos = dbHelper.obtenerProductos();
+            runOnUiThread(() -> {
+                listaProductos = productos;
+                adapter = new ProductoAdapter(this, listaProductos, esAdmin);
+                recyclerProductos.setAdapter(adapter);
+            });
+        });
     }
 
     private void mostrarDialogoAgregar() {
@@ -89,9 +106,16 @@ public class ProductosActivity extends AppCompatActivity {
             }
 
             double precio = Double.parseDouble(precioStr);
-            dbHelper.insertarProducto(nombre, descripcion, precio, imagenUrl);
-            cargarProductos(); // refresca el RecyclerView
-            Toast.makeText(this, "Producto agregado", Toast.LENGTH_SHORT).show();
+            dbExecutor.execute(() -> {
+                dbHelper.insertarProducto(nombre, descripcion, precio, imagenUrl);
+                ArrayList<Producto> productosActualizados = dbHelper.obtenerProductos();
+                runOnUiThread(() -> {
+                    listaProductos = productosActualizados;
+                    adapter = new ProductoAdapter(this, listaProductos, esAdmin);
+                    recyclerProductos.setAdapter(adapter);
+                    Toast.makeText(this, "Producto agregado", Toast.LENGTH_SHORT).show();
+                });
+            });
         });
 
         builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());

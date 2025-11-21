@@ -2,6 +2,7 @@ package com.example.fitsweet;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ public class ProductosActivity extends AppCompatActivity {
     ProductoAdapter adapter;
     DBHelper dbHelper;
     Button btnAgregarProducto;
+    Button btnVerCarrito;
     ArrayList<Producto> listaProductos;
 
     @Override
@@ -34,12 +36,17 @@ public class ProductosActivity extends AppCompatActivity {
 
         recyclerProductos = findViewById(R.id.recyclerProductos);
         btnAgregarProducto = findViewById(R.id.btnAgregarProducto);
+        btnVerCarrito = findViewById(R.id.btnVerCarrito);
         recyclerProductos.setLayoutManager(new LinearLayoutManager(this));
 
         dbHelper = new DBHelper(this);
         cargarProductos();
 
         btnAgregarProducto.setOnClickListener(v -> mostrarDialogoAgregar());
+        btnVerCarrito.setOnClickListener(v -> {
+            Intent intent = new Intent(ProductosActivity.this, CarritoActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void cargarProductos() {

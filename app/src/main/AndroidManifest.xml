@@ -23,6 +23,9 @@
         <!-- Pantalla de Perfil -->
         <activity android:name=".PerfilActivity" />
 
+        <!-- Pantalla de Carrito -->
+        <activity android:name=".CarritoActivity" />
+
         <!-- Pantalla de Bienvenida -->
         <activity android:name=".BienvenidaActivity" />
 

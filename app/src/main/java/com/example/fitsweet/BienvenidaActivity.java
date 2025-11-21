@@ -15,6 +15,7 @@ public class BienvenidaActivity extends AppCompatActivity {
         // Botones de la pantalla de bienvenida
         Button btnLogin = findViewById(R.id.btnLogin);
         Button btnRegistro = findViewById(R.id.btnRegistro);
+        Button btnSede = findViewById(R.id.btnSede);
 
         // Ir al Login
         btnLogin.setOnClickListener(v -> {
@@ -25,6 +26,12 @@ public class BienvenidaActivity extends AppCompatActivity {
         // Ir al Registro
         btnRegistro.setOnClickListener(v -> {
             Intent intent = new Intent(BienvenidaActivity.this, RegistroActivity.class);
+            startActivity(intent);
+        });
+
+        // Ir a Sede
+        btnSede.setOnClickListener(v -> {
+            Intent intent = new Intent(BienvenidaActivity.this, SedeActivity.class);
             startActivity(intent);
         });
     }

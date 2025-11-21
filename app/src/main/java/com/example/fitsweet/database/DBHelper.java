@@ -13,8 +13,9 @@ import java.util.ArrayList;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "fitsweet.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private static final String TABLE_PRODUCTOS = "productos";
+    private static final String TABLE_USUARIOS = "usuarios";
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -22,16 +23,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_PRODUCTOS + " (" +
+        String createProductosTable = "CREATE TABLE " + TABLE_PRODUCTOS + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "nombre TEXT, " +
                 "descripcion TEXT, " +
                 "precio REAL)";
-        db.execSQL(createTable);
+        db.execSQL(createProductosTable);
+
+        String createUsuariosTable = "CREATE TABLE " + TABLE_USUARIOS + " (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "correo TEXT UNIQUE, " +
+                "nombre TEXT, " +
+                "password_hash TEXT)";
+        db.execSQL(createUsuariosTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USUARIOS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTOS);
         onCreate(db);
     }
@@ -84,5 +93,35 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PRODUCTOS, "id=?", new String[]{String.valueOf(id)});
         db.close();
+    }
+
+    // Insertar usuario
+    public void insertarUsuario(String nombre, String correo, String passwordHash) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("nombre", nombre);
+        values.put("correo", correo);
+        values.put("password_hash", passwordHash);
+        db.insert(TABLE_USUARIOS, null, values);
+        db.close();
+    }
+
+    // Validar credenciales
+    public boolean validarCredenciales(String correo, String passwordHash) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                TABLE_USUARIOS,
+                new String[]{"id"},
+                "correo = ? AND password_hash = ?",
+                new String[]{correo, passwordHash},
+                null,
+                null,
+                null
+        );
+
+        boolean credencialesValidas = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return credencialesValidas;
     }
 }

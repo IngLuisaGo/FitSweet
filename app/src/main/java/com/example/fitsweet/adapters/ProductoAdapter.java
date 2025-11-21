@@ -2,7 +2,6 @@ package com.example.fitsweet.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +24,13 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
     private Context context;
     private ArrayList<Producto> listaProductos;
     private DBHelper dbHelper;
+    private boolean esAdmin;
 
-    public ProductoAdapter(Context context, ArrayList<Producto> listaProductos) {
+    public ProductoAdapter(Context context, ArrayList<Producto> listaProductos, boolean esAdmin) {
         this.context = context;
         this.listaProductos = listaProductos;
         this.dbHelper = new DBHelper(context);
+        this.esAdmin = esAdmin;
     }
 
     @NonNull
@@ -46,23 +47,34 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
         holder.tvDescripcion.setText(producto.getDescripcion());
         holder.tvPrecio.setText("$" + producto.getPrecio());
 
-        // 🔹 Botón Editar
-        holder.btnEditar.setOnClickListener(v -> mostrarDialogoEditar(producto));
+        holder.btnEditar.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
+        holder.btnEliminar.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
+        holder.btnAgregarCarrito.setVisibility(esAdmin ? View.GONE : View.VISIBLE);
 
-        // 🔹 Botón Eliminar
-        holder.btnEliminar.setOnClickListener(v -> {
-            new AlertDialog.Builder(context)
-                    .setTitle("Eliminar producto")
-                    .setMessage("¿Deseas eliminar " + producto.getNombre() + "?")
-                    .setPositiveButton("Sí", (dialog, which) -> {
-                        dbHelper.eliminarProducto(producto.getId());
-                        listaProductos.remove(position);
-                        notifyItemRemoved(position);
-                        Toast.makeText(context, "Producto eliminado", Toast.LENGTH_SHORT).show();
-                    })
-                    .setNegativeButton("Cancelar", null)
-                    .show();
-        });
+        if (esAdmin) {
+            // 🔹 Botón Editar
+            holder.btnEditar.setOnClickListener(v -> mostrarDialogoEditar(producto));
+
+            // 🔹 Botón Eliminar
+            holder.btnEliminar.setOnClickListener(v -> {
+                new AlertDialog.Builder(context)
+                        .setTitle("Eliminar producto")
+                        .setMessage("¿Deseas eliminar " + producto.getNombre() + "?")
+                        .setPositiveButton("Sí", (dialog, which) -> {
+                            dbHelper.eliminarProducto(producto.getId());
+                            listaProductos.remove(position);
+                            notifyItemRemoved(position);
+                            Toast.makeText(context, "Producto eliminado", Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton("Cancelar", null)
+                        .show();
+            });
+        } else {
+            holder.btnAgregarCarrito.setOnClickListener(v -> {
+                dbHelper.agregarProductoAlCarrito(producto.getId(), 1);
+                Toast.makeText(context, "Producto añadido al carrito", Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 
     private void mostrarDialogoEditar(Producto producto) {
@@ -104,6 +116,7 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvNombre, tvDescripcion, tvPrecio;
         ImageButton btnEditar, btnEliminar;
+        View btnAgregarCarrito;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -112,6 +125,7 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
             tvPrecio = itemView.findViewById(R.id.tvPrecio);
             btnEditar = itemView.findViewById(R.id.btnEditar);
             btnEliminar = itemView.findViewById(R.id.btnEliminar);
+            btnAgregarCarrito = itemView.findViewById(R.id.btnAgregarCarrito);
         }
     }
 }

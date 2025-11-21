@@ -59,4 +59,13 @@
             app:tint="@color/white"
             android:contentDescription="@string/eliminar" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAgregarCarrito"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Agregar al carrito"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@color/white"
+        android:layout_marginTop="8dp" />
 </LinearLayout>

@@ -8,10 +8,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fitsweet.database.DBHelper;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText txtCorreoLogin, txtContrasenaLogin;
     private Button btnIniciarSesion, btnVolverLogin;
+    private DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         txtContrasenaLogin = findViewById(R.id.txtContrasenaLogin);
         btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
         btnVolverLogin = findViewById(R.id.btnVolverLogin);
+        dbHelper = new DBHelper(this);
 
         // Acción del botón Iniciar Sesión
         btnIniciarSesion.setOnClickListener(v -> {
@@ -31,17 +35,19 @@ public class LoginActivity extends AppCompatActivity {
             if (correo.isEmpty() || contrasena.isEmpty()) {
                 Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Inicio de sesión exitoso. ¡Bienvenida de nuevo a FitSweet 🍓!", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(this, BienvenidaActivity.class));
-                finish();
+                boolean credencialesValidas = dbHelper.validarCredenciales(correo, contrasena);
+                if (credencialesValidas) {
+                    Toast.makeText(this, "Inicio de sesión exitoso. ¡Bienvenida de nuevo a FitSweet 🍓!", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(this, BienvenidaActivity.class));
+                    finish();
+                } else {
+                    Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         // Acción del botón Volver
         btnVolverLogin.setOnClickListener(v -> finish());
-        Intent intent = new Intent(LoginActivity.this, ProductosActivity.class);
-        startActivity(intent);
-        finish();
 
     }
 }

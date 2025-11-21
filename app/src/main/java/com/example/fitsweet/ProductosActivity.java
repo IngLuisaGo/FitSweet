@@ -26,6 +26,7 @@ public class ProductosActivity extends AppCompatActivity {
     DBHelper dbHelper;
     Button btnAgregarProducto;
     Button btnVerCarrito;
+    Button btnGestionUsuarios;
     ArrayList<Producto> listaProductos;
     boolean esAdmin;
 
@@ -37,16 +38,23 @@ public class ProductosActivity extends AppCompatActivity {
         recyclerProductos = findViewById(R.id.recyclerProductos);
         btnAgregarProducto = findViewById(R.id.btnAgregarProducto);
         btnVerCarrito = findViewById(R.id.btnVerCarrito);
+        btnGestionUsuarios = findViewById(R.id.btnGestionUsuarios);
         recyclerProductos.setLayoutManager(new LinearLayoutManager(this));
 
         dbHelper = new DBHelper(this);
         esAdmin = getIntent().getBooleanExtra("ES_ADMIN", false);
         btnAgregarProducto.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
+        btnGestionUsuarios.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
+        btnVerCarrito.setVisibility(esAdmin ? View.GONE : View.VISIBLE);
         cargarProductos();
 
         btnAgregarProducto.setOnClickListener(v -> mostrarDialogoAgregar());
         btnVerCarrito.setOnClickListener(v -> {
             Intent intent = new Intent(ProductosActivity.this, CarritoActivity.class);
+            startActivity(intent);
+        });
+        btnGestionUsuarios.setOnClickListener(v -> {
+            Intent intent = new Intent(ProductosActivity.this, UsuariosActivity.class);
             startActivity(intent);
         });
     }

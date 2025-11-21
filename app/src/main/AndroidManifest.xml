@@ -26,6 +26,9 @@
         <!-- Pantalla de Carrito -->
         <activity android:name=".CarritoActivity" />
 
+        <!-- Pantalla de Gestión de Usuarios -->
+        <activity android:name=".UsuariosActivity" />
+
         <!-- Pantalla de Bienvenida -->
         <activity android:name=".BienvenidaActivity" />
 

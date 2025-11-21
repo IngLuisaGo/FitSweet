@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.fitsweet.models.Producto;
+import com.example.fitsweet.models.Usuario;
 
 import java.util.ArrayList;
 
@@ -140,6 +141,45 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("password_hash", passwordHash);
         values.put("rol", "usuario");
         db.insert(TABLE_USUARIOS, null, values);
+        db.close();
+    }
+
+    // Obtener todos los usuarios
+    public ArrayList<Usuario> obtenerUsuarios() {
+        ArrayList<Usuario> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id, nombre, correo, rol FROM " + TABLE_USUARIOS, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                lista.add(new Usuario(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3)
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return lista;
+    }
+
+    // Actualizar usuario
+    public void actualizarUsuario(int id, String nombre, String correo, String rol) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("nombre", nombre);
+        values.put("correo", correo);
+        values.put("rol", rol);
+        db.update(TABLE_USUARIOS, values, "id=?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    // Eliminar usuario
+    public void eliminarUsuario(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_USUARIOS, "id=?", new String[]{String.valueOf(id)});
         db.close();
     }
 

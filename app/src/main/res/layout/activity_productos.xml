@@ -25,6 +25,15 @@
         android:layout_marginBottom="12dp"/>
 
     <Button
+        android:id="@+id/btnGestionUsuarios"
+        android:text="Gestionar usuarios"
+        android:backgroundTint="@color/purple_200"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
         android:id="@+id/btnAgregarProducto"
         android:text="Agregar Producto"
         android:backgroundTint="@color/teal_700"

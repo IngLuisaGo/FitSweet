@@ -13,7 +13,7 @@ import com.example.fitsweet.database.DBHelper;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText txtCorreoLogin, txtContrasenaLogin;
-    private Button btnIniciarSesion, btnVolverLogin, btnRegistrarse, btnSede;
+    private Button btnIniciarSesion, btnVolverLogin, btnRegistrarse;
     private DBHelper dbHelper;
 
     @Override
@@ -25,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
         txtContrasenaLogin = findViewById(R.id.txtContrasenaLogin);
         btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
         btnRegistrarse = findViewById(R.id.btnRegistrarse);
-        btnSede = findViewById(R.id.btnSede);
         btnVolverLogin = findViewById(R.id.btnVolverLogin);
         dbHelper = new DBHelper(this);
 
@@ -54,12 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         // Acción del botón Registrarse
         btnRegistrarse.setOnClickListener(v -> {
             Intent intent = new Intent(this, RegistroActivity.class);
-            startActivity(intent);
-        });
-
-        // Acción del botón Sede
-        btnSede.setOnClickListener(v -> {
-            Intent intent = new Intent(this, SedeActivity.class);
             startActivity(intent);
         });
 

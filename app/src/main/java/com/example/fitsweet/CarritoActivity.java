@@ -71,12 +71,15 @@ public class CarritoActivity extends AppCompatActivity {
             }
 
             int cantidadItems = items == null ? 0 : items.size();
+            final double totalFinal = total;
+            final int cantidadItemsFinal = cantidadItems;
+
             runOnUiThread(() -> {
-                tvTotalCarrito.setText("Total: $" + String.format("%.2f", total));
-                if (cantidadItems == 0) {
+                tvTotalCarrito.setText("Total: $" + String.format("%.2f", totalFinal));
+                if (cantidadItemsFinal == 0) {
                     tvEstadoCarrito.setText("Tu carrito está vacío por ahora.");
                 } else {
-                    tvEstadoCarrito.setText("Tienes " + cantidadItems + " productos en tu carrito.");
+                    tvEstadoCarrito.setText("Tienes " + cantidadItemsFinal + " productos en tu carrito.");
                 }
             });
         });

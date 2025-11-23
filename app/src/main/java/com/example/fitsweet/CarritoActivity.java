@@ -14,6 +14,8 @@ import com.example.fitsweet.database.DBHelper;
 import com.example.fitsweet.models.CarritoItem;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CarritoActivity extends AppCompatActivity {
 
@@ -23,6 +25,7 @@ public class CarritoActivity extends AppCompatActivity {
     private CarritoAdapter adapter;
     private DBHelper dbHelper;
     private ArrayList<CarritoItem> items;
+    private ExecutorService dbExecutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class CarritoActivity extends AppCompatActivity {
         recyclerCarrito = findViewById(R.id.recyclerCarrito);
         recyclerCarrito.setLayoutManager(new LinearLayoutManager(this));
         dbHelper = new DBHelper(this);
+        dbExecutor = Executors.newSingleThreadExecutor();
 
         cargarCarrito();
 
@@ -46,19 +50,43 @@ public class CarritoActivity extends AppCompatActivity {
     }
 
     private void cargarCarrito() {
-        items = dbHelper.obtenerCarrito();
-        adapter = new CarritoAdapter(this, items, this::actualizarTotal);
-        recyclerCarrito.setAdapter(adapter);
-        actualizarTotal();
+        dbExecutor.execute(() -> {
+            ArrayList<CarritoItem> carrito = dbHelper.obtenerCarrito();
+            runOnUiThread(() -> {
+                items = carrito;
+                adapter = new CarritoAdapter(this, items, this::actualizarTotal);
+                recyclerCarrito.setAdapter(adapter);
+                actualizarTotal();
+            });
+        });
     }
 
     private void actualizarTotal() {
-        double total = dbHelper.calcularTotalCarrito();
-        tvTotalCarrito.setText("Total: $" + String.format("%.2f", total));
-        if (items == null || items.isEmpty()) {
-            tvEstadoCarrito.setText("Tu carrito está vacío por ahora.");
-        } else {
-            tvEstadoCarrito.setText("Tienes " + items.size() + " productos en tu carrito.");
+        dbExecutor.execute(() -> {
+            double total = 0;
+            if (items != null) {
+                for (CarritoItem item : items) {
+                    total += item.getTotal();
+                }
+            }
+
+            int cantidadItems = items == null ? 0 : items.size();
+            runOnUiThread(() -> {
+                tvTotalCarrito.setText("Total: $" + String.format("%.2f", total));
+                if (cantidadItems == 0) {
+                    tvEstadoCarrito.setText("Tu carrito está vacío por ahora.");
+                } else {
+                    tvEstadoCarrito.setText("Tienes " + cantidadItems + " productos en tu carrito.");
+                }
+            });
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dbExecutor != null && !dbExecutor.isShutdown()) {
+            dbExecutor.shutdownNow();
         }
     }
 }
